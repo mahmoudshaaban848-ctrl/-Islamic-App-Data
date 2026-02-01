@@ -1,42 +1,69 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المرجعية الإسلامية</title>
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; }
-        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
-        h1 { color: #2d5a27; }
-        .btn { background-color: #673ab7; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 18px; transition: 0.3s; width: 100%; }
-        .btn:hover { background-color: #512da8; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تطبيق المرجعية الإسلامية</title>
+
+  <!-- Pi SDK -->
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .app-card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1 { color: #1b5e20; }
+    p { color: #555; }
+    button {
+      background-color: #673ab7;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="card">
-        <h1>تطبيق المرجعية الإسلامية</h1>
-        <p>مرحباً بك في تطبيقك الرسمي على شبكة باي</p>
-        <button id="login-btn" class="btn">دخول عبر Pi Network</button>
-        <div id="user-info" style="margin-top: 20px; color: #666;"></div>
-    </div>
+  <div class="app-card">
+    <h1>المرجعية الإسلامية</h1>
+    <p>تطبيق تعليمي من القرآن والسنة وكتب أهل العلم.</p>
+    <button onclick="login()">الدخول عبر Pi</button>
+    <div id="status" style="margin-top:15px;"></div>
+  </div>
 
-    <script>
-        // تهيئة التطبيق مع تفعيل وضع Sandbox لضمان الاتصال
-        const Pi = window.Pi;
-        Pi.init({ version: "2.0", sandbox: true });
+  <script>
+    Pi.init({ version: "2.0" });
 
-        document.getElementById('login-btn').onclick = function() {
-            const scopes = ['username', 'payments'];
-            function onIncompletePaymentFound(payment) { /* معالجة المدفوعات */ }
-
-            Pi.authenticate(scopes, onIncompletePaymentFound).then(function(auth) {
-                document.getElementById('user-info').innerText = "أهلاً بك: " + auth.user.username;
-                console.log("تم تسجيل الدخول بنجاح!");
-            }).catch(function(error) {
-                console.error(error);
-            });
-        };
-    </script>
+    async function login() {
+      try {
+        const auth = await Pi.authenticate(['username']);
+        document.getElementById('status').innerText =
+          "مرحباً " + auth.user.username;
+      } catch (e) {
+        document.getElementById('status').innerText =
+          "يرجى فتح التطبيق من متصفح Pi";
+      }
+    }
+  </script>
 </body>
-</html>
+    </html>
