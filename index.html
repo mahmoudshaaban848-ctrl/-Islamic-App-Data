@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تطبيق المرجعية الإسلامية</title>
+  <title>الأدعية والأذكار - المرجعية الإسلامية</title>
 
   <!-- Pi SDK -->
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
@@ -14,41 +14,118 @@
       background-color: #f0f2f5;
       margin: 0;
       padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
     }
-    .app-card {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
+    header {
       text-align: center;
-      max-width: 400px;
-      width: 100%;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
     h1 { color: #1b5e20; }
-    p { color: #555; }
-    button {
+    .section-btn {
       background-color: #673ab7;
       color: white;
       border: none;
-      padding: 12px;
+      padding: 12px 20px;
+      margin: 5px 0;
       border-radius: 8px;
-      font-size: 16px;
       cursor: pointer;
       width: 100%;
+      font-size: 16px;
     }
+    .section-btn:hover { background-color: #512da8; }
+    .content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: none;
+      margin-bottom: 20px;
+    }
+    .zekr {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+    .zekr p {
+      margin: 5px 0;
+    }
+    .zekr button {
+      background-color: #1b5e20;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    .zekr button:hover { background-color: #145214; }
   </style>
 </head>
-
 <body>
-  <div class="app-card">
-    <h1>المرجعية الإسلامية</h1>
-    <p>تطبيق تعليمي من القرآن والسنة وكتب أهل العلم.</p>
-    <button onclick="login()">الدخول عبر Pi</button>
-    <div id="status" style="margin-top:15px;"></div>
+  <header>
+    <h1>الأدعية والأذكار</h1>
+    <button class="section-btn" onclick="showSection('morning')">أذكار الصباح</button>
+    <button class="section-btn" onclick="showSection('evening')">أذكار المساء</button>
+    <button class="section-btn" onclick="showSection('sleep')">أذكار النوم</button>
+    <button class="section-btn" onclick="showSection('prayer')">أذكار الصلاة</button>
+  </header>
+
+  <!-- أذكار الصباح -->
+  <div id="morning" class="content">
+    <h2>أذكار الصباح</h2>
+    <div class="zekr">
+      <p>اللهم بك أصبحنا وبك أمسينا</p>
+      <p>عدد التكرار: <span id="morning1">1</span></p>
+      <button onclick="decreaseCounter('morning1')">تم</button>
+    </div>
+    <div class="zekr">
+      <p>أصبحنا على فطرة الإسلام</p>
+      <p>عدد التكرار: <span id="morning2">1</span></p>
+      <button onclick="decreaseCounter('morning2')">تم</button>
+    </div>
+  </div>
+
+  <!-- أذكار المساء -->
+  <div id="evening" class="content">
+    <h2>أذكار المساء</h2>
+    <div class="zekr">
+      <p>أمسينا على فطرة الإسلام</p>
+      <p>عدد التكرار: <span id="evening1">1</span></p>
+      <button onclick="decreaseCounter('evening1')">تم</button>
+    </div>
+    <div class="zekr">
+      <p>اللهم بك أمسينا وبك أصبحنا</p>
+      <p>عدد التكرار: <span id="evening2">1</span></p>
+      <button onclick="decreaseCounter('evening2')">تم</button>
+    </div>
+  </div>
+
+  <!-- أذكار النوم -->
+  <div id="sleep" class="content">
+    <h2>أذكار النوم</h2>
+    <div class="zekr">
+      <p>باسمك اللهم أموت وأحيا</p>
+      <p>عدد التكرار: <span id="sleep1">1</span></p>
+      <button onclick="decreaseCounter('sleep1')">تم</button>
+    </div>
+    <div class="zekr">
+      <p>اللهم قني عذابك يوم تبعث عبادك</p>
+      <p>عدد التكرار: <span id="sleep2">1</span></p>
+      <button onclick="decreaseCounter('sleep2')">تم</button>
+    </div>
+  </div>
+
+  <!-- أذكار الصلاة -->
+  <div id="prayer" class="content">
+    <h2>أذكار الصلاة</h2>
+    <div class="zekr">
+      <p>سبحان الله والحمد لله ولا إله إلا الله والله أكبر</p>
+      <p>عدد التكرار: <span id="prayer1">1</span></p>
+      <button onclick="decreaseCounter('prayer1')">تم</button>
+    </div>
+    <div class="zekr">
+      <p>اللهم اجعل صلاتي نوراً وبركةً لي</p>
+      <p>عدد التكرار: <span id="prayer2">1</span></p>
+      <button onclick="decreaseCounter('prayer2')">تم</button>
+    </div>
   </div>
 
   <script>
@@ -57,13 +134,25 @@
     async function login() {
       try {
         const auth = await Pi.authenticate(['username']);
-        document.getElementById('status').innerText =
-          "مرحباً " + auth.user.username;
+        alert("مرحباً بك " + auth.user.username);
       } catch (e) {
-        document.getElementById('status').innerText =
-          "يرجى فتح التطبيق من متصفح Pi";
+        alert("يرجى فتح التطبيق من متصفح Pi");
       }
+    }
+
+    // عرض القسم المختار وإخفاء الباقي
+    function showSection(id) {
+      const sections = document.querySelectorAll('.content');
+      sections.forEach(s => s.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+
+    // تقليل عداد الذكر عند القراءة
+    function decreaseCounter(id) {
+      let el = document.getElementById(id);
+      let count = parseInt(el.innerText);
+      if (count > 0) el.innerText = count - 1;
     }
   </script>
 </body>
-</html>
+    </html>
