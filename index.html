@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="pi-domain-verification" content="bebccf6428">
+
 <title>المرجعية الإسلامية – الأذكار</title>
+
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
 <style>
 body {
@@ -55,6 +60,19 @@ header {
   color: #555;
   margin-top: 8px;
 }
+
+/* زر الدخول الخاص بباي */
+#pi-login-btn {
+  background: #673ab7;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
 </style>
 </head>
 
@@ -66,8 +84,9 @@ header {
 </header>
 
 <div class="section">
-  <h3>🌅 أذكار الصباح</h3>
+  <button id="pi-login-btn" onclick="loginWithPi()">تسجيل الدخول عبر Pi Network</button>
 
+  <h3>🌅 أذكار الصباح</h3>
   <div class="zikr">
     <div>أصبحنا وأصبح الملك لله...</div>
     <div class="count" onclick="countDown(this,1)">1</div>
@@ -86,7 +105,6 @@ header {
 
 <div class="section">
   <h3>🌙 أذكار المساء</h3>
-
   <div class="zikr">
     <div>أمسينا وأمسى الملك لله...</div>
     <div class="count" onclick="countDown(this,1)">1</div>
@@ -99,6 +117,25 @@ header {
 </div>
 
 <script>
+// تهيئة الـ SDK
+const Pi = window.Pi;
+Pi.init({ version: "2.0", sandbox: true });
+
+async function loginWithPi() {
+  try {
+    const scopes = ['username', 'payments'];
+    const auth = await Pi.authenticate(scopes, onIncompletePaymentFound);
+    alert("مرحباً بك: " + auth.user.username);
+    document.getElementById('pi-login-btn').style.display = 'none';
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function onIncompletePaymentFound(payment) {
+  /* معالجة المدفوعات المعلقة */
+}
+
 function countDown(el, total) {
   let current = parseInt(el.innerText);
   if (current > 0) {
