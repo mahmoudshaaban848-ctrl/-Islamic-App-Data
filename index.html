@@ -1,158 +1,115 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الأدعية والأذكار - المرجعية الإسلامية</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المرجعية الإسلامية – الأذكار</title>
 
-  <!-- Pi SDK -->
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<style>
+body {
+  font-family: "Tahoma", Arial;
+  background: #f2f5f3;
+  margin: 0;
+  padding: 10px;
+}
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 20px;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    h1 { color: #1b5e20; }
-    .section-btn {
-      background-color: #673ab7;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      margin: 5px 0;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 16px;
-    }
-    .section-btn:hover { background-color: #512da8; }
-    .content {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      display: none;
-      margin-bottom: 20px;
-    }
-    .zekr {
-      border-bottom: 1px solid #ddd;
-      padding: 10px 0;
-    }
-    .zekr p {
-      margin: 5px 0;
-    }
-    .zekr button {
-      background-color: #1b5e20;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 5px;
-    }
-    .zekr button:hover { background-color: #145214; }
-  </style>
+header {
+  background: #1b5e20;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.section {
+  margin-top: 15px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.zikr {
+  background: #e8f5e9;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.count {
+  background: #2e7d32;
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.done {
+  background: #bdbdbd !important;
+}
+
+.source {
+  font-size: 13px;
+  color: #555;
+  margin-top: 8px;
+}
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>الأدعية والأذكار</h1>
-    <button class="section-btn" onclick="showSection('morning')">أذكار الصباح</button>
-    <button class="section-btn" onclick="showSection('evening')">أذكار المساء</button>
-    <button class="section-btn" onclick="showSection('sleep')">أذكار النوم</button>
-    <button class="section-btn" onclick="showSection('prayer')">أذكار الصلاة</button>
-  </header>
 
-  <!-- أذكار الصباح -->
-  <div id="morning" class="content">
-    <h2>أذكار الصباح</h2>
-    <div class="zekr">
-      <p>اللهم بك أصبحنا وبك أمسينا</p>
-      <p>عدد التكرار: <span id="morning1">1</span></p>
-      <button onclick="decreaseCounter('morning1')">تم</button>
-    </div>
-    <div class="zekr">
-      <p>أصبحنا على فطرة الإسلام</p>
-      <p>عدد التكرار: <span id="morning2">1</span></p>
-      <button onclick="decreaseCounter('morning2')">تم</button>
-    </div>
+<header>
+  <h2>📿 الأذكار</h2>
+  <div class="source">المصدر: حصن المسلم – الشيخ سعيد بن علي القحطاني</div>
+</header>
+
+<div class="section">
+  <h3>🌅 أذكار الصباح</h3>
+
+  <div class="zikr">
+    <div>أصبحنا وأصبح الملك لله...</div>
+    <div class="count" onclick="countDown(this,1)">1</div>
   </div>
 
-  <!-- أذكار المساء -->
-  <div id="evening" class="content">
-    <h2>أذكار المساء</h2>
-    <div class="zekr">
-      <p>أمسينا على فطرة الإسلام</p>
-      <p>عدد التكرار: <span id="evening1">1</span></p>
-      <button onclick="decreaseCounter('evening1')">تم</button>
-    </div>
-    <div class="zekr">
-      <p>اللهم بك أمسينا وبك أصبحنا</p>
-      <p>عدد التكرار: <span id="evening2">1</span></p>
-      <button onclick="decreaseCounter('evening2')">تم</button>
-    </div>
+  <div class="zikr">
+    <div>اللهم بك أصبحنا وبك أمسينا...</div>
+    <div class="count" onclick="countDown(this,1)">1</div>
   </div>
 
-  <!-- أذكار النوم -->
-  <div id="sleep" class="content">
-    <h2>أذكار النوم</h2>
-    <div class="zekr">
-      <p>باسمك اللهم أموت وأحيا</p>
-      <p>عدد التكرار: <span id="sleep1">1</span></p>
-      <button onclick="decreaseCounter('sleep1')">تم</button>
-    </div>
-    <div class="zekr">
-      <p>اللهم قني عذابك يوم تبعث عبادك</p>
-      <p>عدد التكرار: <span id="sleep2">1</span></p>
-      <button onclick="decreaseCounter('sleep2')">تم</button>
-    </div>
+  <div class="zikr">
+    <div>سبحان الله وبحمده</div>
+    <div class="count" onclick="countDown(this,100)">100</div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🌙 أذكار المساء</h3>
+
+  <div class="zikr">
+    <div>أمسينا وأمسى الملك لله...</div>
+    <div class="count" onclick="countDown(this,1)">1</div>
   </div>
 
-  <!-- أذكار الصلاة -->
-  <div id="prayer" class="content">
-    <h2>أذكار الصلاة</h2>
-    <div class="zekr">
-      <p>سبحان الله والحمد لله ولا إله إلا الله والله أكبر</p>
-      <p>عدد التكرار: <span id="prayer1">1</span></p>
-      <button onclick="decreaseCounter('prayer1')">تم</button>
-    </div>
-    <div class="zekr">
-      <p>اللهم اجعل صلاتي نوراً وبركةً لي</p>
-      <p>عدد التكرار: <span id="prayer2">1</span></p>
-      <button onclick="decreaseCounter('prayer2')">تم</button>
-    </div>
+  <div class="zikr">
+    <div>اللهم أنت ربي لا إله إلا أنت...</div>
+    <div class="count" onclick="countDown(this,1)">1</div>
   </div>
+</div>
 
-  <script>
-    Pi.init({ version: "2.0" });
-
-    async function login() {
-      try {
-        const auth = await Pi.authenticate(['username']);
-        alert("مرحباً بك " + auth.user.username);
-      } catch (e) {
-        alert("يرجى فتح التطبيق من متصفح Pi");
-      }
+<script>
+function countDown(el, total) {
+  let current = parseInt(el.innerText);
+  if (current > 0) {
+    el.innerText = current - 1;
+    if (current - 1 === 0) {
+      el.classList.add("done");
+      el.innerText = "✔ تم";
     }
+  }
+}
+</script>
 
-    // عرض القسم المختار وإخفاء الباقي
-    function showSection(id) {
-      const sections = document.querySelectorAll('.content');
-      sections.forEach(s => s.style.display = 'none');
-      document.getElementById(id).style.display = 'block';
-    }
-
-    // تقليل عداد الذكر عند القراءة
-    function decreaseCounter(id) {
-      let el = document.getElementById(id);
-      let count = parseInt(el.innerText);
-      if (count > 0) el.innerText = count - 1;
-    }
-  </script>
 </body>
-    </html>
+</html>
