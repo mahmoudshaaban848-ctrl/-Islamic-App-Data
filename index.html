@@ -1,79 +1,97 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="pi-domain-verification" content="bebccf6428">
+  <!-- مهم جدًا للتحقق -->
+  <meta name="pi-domain-verification" content="bebccf6428">
 
-<title>المرجعية الإسلامية – الأذكار</title>
+  <title>المرجعية الإسلامية – الأذكار</title>
 
-<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <!-- Pi SDK -->
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
-<style>
-body {
-  font-family: "Tahoma", Arial;
-  background: #f2f5f3;
-  margin: 0;
-  padding: 10px;
-}
+  <style>
+    body {
+      font-family: Tahoma, Arial;
+      background: #f2f5f3;
+      margin: 0;
+      padding: 10px;
+    }
 
-header {
-  background: #1b5e20;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  border-radius: 12px;
-}
+    header {
+      background: #1b5e20;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
 
-.section {
-  margin-top: 15px;
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-}
+    .section {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
 
-.zikr {
-  background: #e8f5e9;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
+    .zikr {
+      background: #e8f5e9;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
 
-.count {
-  background: #2e7d32;
-  color: white;
-  padding: 8px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 18px;
-  margin-top: 8px;
-  cursor: pointer;
-}
+    .zikr-text {
+      font-size: 16px;
+      line-height: 1.7;
+    }
 
-.done {
-  background: #bdbdbd !important;
-}
+    .count {
+      background: #2e7d32;
+      color: white;
+      padding: 8px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      margin-top: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
 
-.source {
-  font-size: 13px;
-  color: #555;
-  margin-top: 8px;
-}
+    .count.done {
+      background: #9e9e9e;
+      cursor: default;
+    }
 
-/* زر الدخول الخاص بباي */
-#pi-login-btn {
-  background: #673ab7;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  width: 100%;
-  margin-bottom: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-</style>
+    .source {
+      font-size: 13px;
+      color: #555;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    #pi-login-btn {
+      background: #673ab7;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      margin-bottom: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    #status {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #1b5e20;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
@@ -85,68 +103,66 @@ header {
 
 <div class="section">
   <button id="pi-login-btn" onclick="loginWithPi()">تسجيل الدخول عبر Pi Network</button>
+  <div id="status"></div>
 
   <h3>🌅 أذكار الصباح</h3>
+
   <div class="zikr">
-    <div>أصبحنا وأصبح الملك لله...</div>
-    <div class="count" onclick="countDown(this,1)">1</div>
+    <div class="zikr-text">
+      أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له...
+    </div>
+    <div class="count" data-max="1">1</div>
   </div>
 
   <div class="zikr">
-    <div>اللهم بك أصبحنا وبك أمسينا...</div>
-    <div class="count" onclick="countDown(this,1)">1</div>
+    <div class="zikr-text">
+      اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور
+    </div>
+    <div class="count" data-max="1">1</div>
   </div>
 
   <div class="zikr">
-    <div>سبحان الله وبحمده</div>
-    <div class="count" onclick="countDown(this,100)">100</div>
-  </div>
-</div>
-
-<div class="section">
-  <h3>🌙 أذكار المساء</h3>
-  <div class="zikr">
-    <div>أمسينا وأمسى الملك لله...</div>
-    <div class="count" onclick="countDown(this,1)">1</div>
+    <div class="zikr-text">
+      سبحان الله وبحمده
+    </div>
+    <div class="count" data-max="100">100</div>
   </div>
 
-  <div class="zikr">
-    <div>اللهم أنت ربي لا إله إلا أنت...</div>
-    <div class="count" onclick="countDown(this,1)">1</div>
-  </div>
 </div>
 
 <script>
-// تهيئة الـ SDK
-const Pi = window.Pi;
-Pi.init({ version: "2.0", sandbox: true });
+  /* تهيئة Pi */
+  Pi.init({ version: "2.0" });
 
-async function loginWithPi() {
-  try {
-    const scopes = ['username', 'payments'];
-    const auth = await Pi.authenticate(scopes, onIncompletePaymentFound);
-    alert("مرحباً بك: " + auth.user.username);
-    document.getElementById('pi-login-btn').style.display = 'none';
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-function onIncompletePaymentFound(payment) {
-  /* معالجة المدفوعات المعلقة */
-}
-
-function countDown(el, total) {
-  let current = parseInt(el.innerText);
-  if (current > 0) {
-    el.innerText = current - 1;
-    if (current - 1 === 0) {
-      el.classList.add("done");
-      el.innerText = "✔ تم";
+  /* تسجيل الدخول */
+  async function loginWithPi() {
+    try {
+      const auth = await Pi.authenticate(['username']);
+      document.getElementById("status").innerText =
+        "مرحبًا " + auth.user.username;
+      document.getElementById("pi-login-btn").style.display = "none";
+    } catch (err) {
+      alert("❌ يجب فتح التطبيق من متصفح Pi Network");
     }
   }
-}
+
+  /* عداد الأذكار */
+  document.querySelectorAll(".count").forEach(el => {
+    el.addEventListener("click", () => {
+      if (el.classList.contains("done")) return;
+
+      let current = parseInt(el.innerText);
+      current--;
+
+      if (current <= 0) {
+        el.innerText = "✔ تم";
+        el.classList.add("done");
+      } else {
+        el.innerText = current;
+      }
+    });
+  });
 </script>
 
 </body>
-</html>
+  </html>
