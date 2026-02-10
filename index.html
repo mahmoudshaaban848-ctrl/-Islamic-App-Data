@@ -2,50 +2,79 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>المرجعية الإسلامية</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- مهم جدًا للتحقق -->
+  <meta name="pi-domain-verification" content="bebccf6428">
+
+  <title>المرجعية الإسلامية – الأذكار</title>
+
+  <!-- Pi SDK -->
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
+  <!-- ربط ملف CSS الخارجي -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<header class="header">
-  <h1>المرجعية الإسلامية</h1>
-  <p>مصدر موثوق للأذكار والقرآن والسنة</p>
+<header>
+  <h2>📿 الأذكار</h2>
+  <div class="source">المصدر: حصن المسلم – الشيخ سعيد بن علي القحطاني</div>
 </header>
 
-<nav class="nav">
-  <a href="pages/adhkar.html">الأذكار</a>
-  <a href="pages/quran.html">القرآن الكريم</a>
-  <a href="pages/hadith.html">الحديث النبوي</a>
-  <a href="pages/seerah.html">السيرة النبوية</a>
-  <a href="pages/aqeedah.html">العقيدة</a>
-</nav>
+<div class="section">
+  <button id="pi-login-btn" onclick="loginWithPi()">تسجيل الدخول عبر Pi Network</button>
+  <div id="status"></div>
 
-<main class="content">
-  <section>
-    <h2>مرحبًا بك</h2>
-    <p>
-      هذا التطبيق يهدف إلى تقديم محتوى إسلامي موثوق ومنظّم،
-      معتمد على القرآن الكريم وصحيح السنة النبوية،
-      ليكون مرجعًا نافعًا لكل مسلم.
-    </p>
-  </section>
+  <h3>🌅 أذكار الصباح</h3>
+  <div class="zikr">
+    <div class="zikr-text">أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له...</div>
+    <div class="count" data-max="1">1</div>
+  </div>
 
-  <section>
-    <h2>منهجية التطبيق</h2>
-    <ul>
-      <li>الاعتماد على القرآن الكريم</li>
-      <li>الاعتماد على الأحاديث الصحيحة</li>
-      <li>الرجوع إلى كتب أهل العلم الموثوقة</li>
-      <li>عرض المحتوى بأسلوب بسيط وواضح</li>
-    </ul>
-  </section>
-</main>
+  <div class="zikr">
+    <div class="zikr-text">اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور</div>
+    <div class="count" data-max="1">1</div>
+  </div>
 
-<footer class="footer">
-  <p>© المرجعية الإسلامية</p>
-</footer>
+  <div class="zikr">
+    <div class="zikr-text">سبحان الله وبحمده</div>
+    <div class="count" data-max="100">100</div>
+  </div>
+
+</div>
+
+<script>
+  /* تهيئة Pi */
+  Pi.init({ version: "2.0" });
+
+  /* تسجيل الدخول */
+  async function loginWithPi() {
+    try {
+      const auth = await Pi.authenticate(['username']);
+      document.getElementById("status").innerText = "مرحبًا " + auth.user.username;
+      document.getElementById("pi-login-btn").style.display = "none";
+    } catch (err) {
+      alert("❌ يجب فتح التطبيق من متصفح Pi Network");
+    }
+  }
+
+  /* عداد الأذكار */
+  document.querySelectorAll(".count").forEach(el => {
+    el.addEventListener("click", () => {
+      if (el.classList.contains("done")) return;
+      let current = parseInt(el.innerText);
+      current--;
+      if (current <= 0) {
+        el.innerText = "✔ تم";
+        el.classList.add("done");
+      } else {
+        el.innerText = current;
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
