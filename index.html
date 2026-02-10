@@ -4,23 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- مهم جدًا للتحقق -->
   <meta name="pi-domain-verification" content="bebccf6428">
-
   <title>المرجعية الإسلامية – الأذكار</title>
 
-  <!-- Pi SDK -->
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
-  <!-- ربط ملف CSS الخارجي -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-  <h2>📿 الأذكار</h2>
-  <div class="source">المصدر: حصن المسلم – الشيخ سعيد بن علي القحطاني</div>
+  <h2>📿 المرجعية الإسلامية</h2>
+  <div class="source">المصدر: حصن المسلم</div>
 </header>
 
 <div class="section">
@@ -28,6 +24,7 @@
   <div id="status"></div>
 
   <h3>🌅 أذكار الصباح</h3>
+  
   <div class="zikr">
     <div class="zikr-text">أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له...</div>
     <div class="count" data-max="1">1</div>
@@ -42,25 +39,23 @@
     <div class="zikr-text">سبحان الله وبحمده</div>
     <div class="count" data-max="100">100</div>
   </div>
-
 </div>
 
 <script>
-  /* تهيئة Pi */
-  Pi.init({ version: "2.0" });
+  /* تهيئة Pi مع تفعيل الـ Sandbox للتجربة */
+  Pi.init({ version: "2.0", sandbox: true });
 
-  /* تسجيل الدخول */
   async function loginWithPi() {
     try {
       const auth = await Pi.authenticate(['username']);
       document.getElementById("status").innerText = "مرحبًا " + auth.user.username;
       document.getElementById("pi-login-btn").style.display = "none";
     } catch (err) {
-      alert("❌ يجب فتح التطبيق من متصفح Pi Network");
+      alert("❌ يجب فتح التطبيق من متصفح Pi Browser");
     }
   }
 
-  /* عداد الأذكار */
+  /* برمجة العداد */
   document.querySelectorAll(".count").forEach(el => {
     el.addEventListener("click", () => {
       if (el.classList.contains("done")) return;
