@@ -3,59 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تجربة Pi Network</title>
+    <title>المرجعية الإسلامية - أذكار الصباح</title>
 
     <meta name="pi-domain-verification" content="bebccf6428">
 
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
-
-    <div style="text-align: center; margin-top: 50px;">
-        <h2>تكامل تطبيق Pi Network</h2>
-        
-        <button id="pi-login-btn" onclick="loginWithPi()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
-            تسجيل الدخول عبر Pi Network
-        </button>
-
-        <div id="status" style="margin-top: 20px; font-weight: bold; color: green;"></div>
-    </div>
-
-    <script>
-        // تهيئة الـ SDK
-        // sandbox: true (للتجربة)، اجعلها false عند النشر النهائي
-        Pi.init({ version: "2.0", sandbox: true });
-
-        // دالة تسجيل الدخول
-        async function loginWithPi() {
-            try {
-                // طلب المصادقة والحصول على بيانات المستخدم
-                const auth = await Pi.authenticate(['username'], onIncompletePaymentFound);
-                
-                // عند النجاح
-                document.getElementById("status").innerText = "تم تسجيل الدخول بنجاح! مرحبًا: " + auth.user.username;
-                document.getElementById("pi-login-btn").style.display = "none"; // إخفاء الزر
-                
-                console.log("User Auth:", auth);
-
-            } catch (err) {
-                // التعامل مع الأخطاء
-                console.error("Authentication failed", err);
-                alert("فشل تسجيل الدخول. تأكد أنك تستخدم متصفح Pi Browser.");
-            }
-        }
-
-        // دالة مطلوبة من Pi للتعامل مع المدفوعات غير المكتملة (حتى لو لم تستخدم الدفع حالياً)
-        function onIncompletePaymentFound(payment) {
-            console.log("Incomplete payment found", payment);
-            // هنا يتم وضع منطق التعامل مع المدفوعات المعلقة
-        }
-    </script>
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق أذكار الصباح</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -72,7 +25,8 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
 
         .app-container {
@@ -82,6 +36,35 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             padding: 25px;
+            margin-top: 20px;
+        }
+
+        /* تنسيق قسم تسجيل دخول باي */
+        .pi-login-section {
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+        }
+
+        #pi-login-btn {
+            background-color: #f1c40f;
+            color: #2c3e50;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        #pi-login-btn:hover {
+            background-color: #d4ac0d;
         }
 
         header {
@@ -159,7 +142,6 @@
             font-weight: bold;
         }
 
-        /* حالة الإتمام */
         .completed {
             background-color: #f8f9fa;
             opacity: 0.6;
@@ -185,91 +167,118 @@
 </head>
 <body>
 
-<div class="app-container">
-    <header>
-        <h1>أذكار الصباح</h1>
-        <button class="reset-btn" onclick="resetAll()">إعادة ضبط الأذكار</button>
-    </header>
+    <div class="pi-login-section">
+        <h3 style="margin-top:0;">تكامل Pi Network</h3>
+        <button id="pi-login-btn" onclick="loginWithPi()">تسجيل الدخول عبر Pi Network</button>
+        <div id="status" style="margin-top: 10px; font-weight: bold; color: green;"></div>
+    </div>
 
-    <div id="azkar-list"></div>
-</div>
+    <div class="app-container">
+        <header>
+            <h1>أذكار الصباح</h1>
+            <button class="reset-btn" onclick="resetAll()">إعادة ضبط الأذكار</button>
+        </header>
 
-<script>
-    const azkarData = [
-        { id: 1, text: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ", count: 1 },
-        { id: 2, text: "قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ", count: 3 },
-        { id: 3, text: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (1) مِنْ شَرِّ مَا خَلَقَ (2) وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (4) وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ", count: 3 },
-        { id: 4, text: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ", count: 3 },
-        { id: 5, text: "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، رب أسألك خير ما في هذا اليوم وخير ما بعده، وأعوذ بك من شر ما في هذا اليوم وشر ما بعده، رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر", count: 1 },
-        { id: 6, text: "اللهم بك أصبحنا، وبك أمسينا، وبك نحيا، وبك نموت، وإليك النشور", count: 1 },
-        { id: 7, text: "أصبحنا على فطرة الإسلام، وعلى كلمة الإخلاص، وعلى دين نبينا محمد ﷺ، وعلى ملة أبينا إبراهيم حنيفاً مسلماً وما كان من المشركين", count: 1 },
-        { id: 8, text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ فَتْحَهُ، وَنَصْرَهُ، وَنُورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ، وَشَرِّ مَا بَعْدَهُ", count: 1 },
-        { id: 9, text: "اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، أبوء لك بنعمتك علي، وأبوء لك بذنبي فاغفر لي فإنه لا يغفر الذنوب إلا أنت", count: 1 },
-        { id: 10, text: "اللهم أنت ربي لا إله إلا أنت، عليك توكلت، وأنت رب العرش العظيم، ما شاء الله كان، وما لم يشأ لم يكن، ولا حول ولا قوة إلا بالله العلي العظيم، أعلم أن الله على كل شيء قدير، وأن الله قد أحاط بكل شيء علماً", count: 1 },
-        { id: 11, text: "اللهم إني أسألك العفو والعافية في الدنيا والآخرة، اللهم إني أسألك العفو والعافية في ديني ودنياي وأهلي ومالي، اللهم استر عوراتي وآمن روعاتي، اللهم احفظني من بين يدي ومن خلفي وعن يميني وعن شمالي ومن فوقي، وأعوذ بعظمتك أن أغتال من تحتي", count: 1 },
-        { id: 12, text: "اللهم عافني في بدني، اللهم عافني في سمعي، اللهم عافني في بصري، لا إله إلا أنت", count: 3 },
-        { id: 13, text: "اللهم إني أعوذ بك من الكفر، والفقر، وأعوذ بك من عذاب القبر، لا إله إلا أنت", count: 3 },
-        { id: 14, text: "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم", count: 3 },
-        { id: 15, text: "رضيت بالله رباً، وبالإسلام ديناً، وبمحمد ﷺ نبياً", count: 3 },
-        { id: 16, text: "يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين", count: 1 },
-        { id: 17, text: "حسبي الله لا إله إلا هو، عليه توكلت وهو رب العرش العظيم", count: 7 },
-        { id: 18, text: "اللهم فاطر السموات والأرض، عالم الغيب والشهادة، رب كل شيء ومليكه، أشهد أن لا إله إلا أنت، أعوذ بك من شر نفسي، ومن شر الشيطان وشركه، وأن أقترف على نفسي سوءاً، أو أجره إلى مسلم", count: 1 },
-        { id: 19, text: "أعوذ بكلمات الله التامات من شر ما خلق", count: 3 },
-        { id: 20, text: "اللهم إني أصبحت أشهدك وأشهد حملة عرشك، وملائكتك وجميع خلقك، أنك أنت الله لا إله إلا أنت وحدك لا شريك لك، وأن محمداً عبدك ورسولك", count: 4 },
-        { id: 21, text: "سبحان الله وبحمده، عدد خلقه، ورضا نفسه، وزنة عرشه، ومداد كلماته", count: 3 },
-        { id: 22, text: "اللهم ما أصبح بي من نعمة أو بأحد من خلقك فمنك وحدك لا شريك لك، فلك الحمد ولك الشكر", count: 1 },
-        { id: 23, text: "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملًا متقبلاً", count: 1 },
-        { id: 24, text: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَأَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ، وَأَعُوذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ، وَقَهْرِ الرِّجَالِ", count: 1 },
-        { id: 25, text: "يا مقلب القلوب ثبت قلبي على دينك", count: 3 },
-        { id: 26, text: "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، وهو على كل شيء قدير", count: 100 },
-        { id: 27, text: "سبحان الله وبحمده", count: 100 },
-        { id: 28, text: "سُبْحَانَ اللهِ العَظِيمِ وَبِحَمْدِهِ", count: 10 },
-        { id: 29, text: "أستغفر الله وأتوب إليه", count: 100 },
-        { id: 30, text: "اللهم صلِّ وسلم على نبينا محمد", count: 10 }
-    ];
+        <div id="azkar-list"></div>
+    </div>
 
-    function loadAzkar() {
-        const listContainer = document.getElementById('azkar-list');
-        listContainer.innerHTML = '';
-        
-        azkarData.forEach(item => {
-            const savedCount = localStorage.getItem(`zekr_${item.id}`) || item.count;
-            const isCompleted = savedCount == 0;
+    <script>
+        // --- أولاً: أكواد Pi Network ---
+        Pi.init({ version: "2.0", sandbox: true });
+
+        async function loginWithPi() {
+            try {
+                const auth = await Pi.authenticate(['username'], onIncompletePaymentFound);
+                document.getElementById("status").innerText = "مرحباً: " + auth.user.username;
+                document.getElementById("pi-login-btn").style.display = "none";
+                console.log("User Auth Success");
+            } catch (err) {
+                console.error(err);
+                alert("يرجى فتح التطبيق من متصفح Pi Browser للتسجيل.");
+            }
+        }
+
+        function onIncompletePaymentFound(payment) {
+            console.log("Incomplete payment", payment);
+        }
+
+        // --- ثانياً: بيانات ومنطق الأذكار ---
+        const azkarData = [
+            { id: 1, text: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ", count: 1 },
+            { id: 2, text: "قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ", count: 3 },
+            { id: 3, text: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (1) مِنْ شَرِّ مَا خَلَقَ (2) وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (4) وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ", count: 3 },
+            { id: 4, text: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ", count: 3 },
+            { id: 5, text: "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، رب أسألك خير ما في هذا اليوم وخير ما بعده، وأعوذ بك من شر ما في هذا اليوم وشر ما بعده، رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر", count: 1 },
+            { id: 6, text: "اللهم بك أصبحنا، وبك أمسينا، وبك نحيا، وبك نموت، وإليك النشور", count: 1 },
+            { id: 7, text: "أصبحنا على فطرة الإسلام، وعلى كلمة الإخلاص، وعلى دين نبينا محمد ﷺ، وعلى ملة أبينا إبراهيم حنيفاً مسلماً وما كان من المشركين", count: 1 },
+            { id: 8, text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ فَتْحَهُ، وَنَصْرَهُ، وَنُورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ، وَشَرِّ مَا بَعْدَهُ", count: 1 },
+            { id: 9, text: "اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، أبوء لك بنعمتك علي، وأبوء لك بذنبي فاغفر لي فإنه لا يغفر الذنوب إلا أنت", count: 1 },
+            { id: 10, text: "اللهم أنت ربي لا إله إلا أنت، عليك توكلت، وأنت رب العرش العظيم، ما شاء الله كان، وما لم يشأ لم يكن، ولا حول ولا قوة إلا بالله العلي العظيم، أعلم أن الله على كل شيء قدير، وأن الله قد أحاط بكل شيء علماً", count: 1 },
+            { id: 11, text: "اللهم إني أسألك العفو والعافية في الدنيا والآخرة، اللهم إني أسألك العفو والعافية في ديني ودنيااي وأهلي ومالي، اللهم استر عوراتي وآمن روعاتي، اللهم احفظني من بين يدي ومن خلفي وعن يميني وعن شمالي ومن فوقي، وأعوذ بعظمتك أن أغتال من تحتي", count: 1 },
+            { id: 12, text: "اللهم عافني في بدني، اللهم عافني في سمعي، اللهم عافني في بصري، لا إله إلا أنت", count: 3 },
+            { id: 13, text: "اللهم إني أعوذ بك من الكفر، والفقر، وأعوذ بك من عذاب القبر، لا إله إلا أنت", count: 3 },
+            { id: 14, text: "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم", count: 3 },
+            { id: 15, text: "رضيت بالله رباً، وبالإسلام ديناً، وبمحمد ﷺ نبياً", count: 3 },
+            { id: 16, text: "يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين", count: 1 },
+            { id: 17, text: "حسبي الله لا إله إلا هو، عليه توكلت وهو رب العرش العظيم", count: 7 },
+            { id: 18, text: "اللهم فاطر السموات والأرض، عالم الغيب والشهادة، رب كل شيء ومليكه، أشهد أن لا إله إلا أنت، أعوذ بك من شر نفسي، ومن شر الشيطان وشركه، وأن أقترف على نفسي سوءاً، أو أجره إلى مسلم", count: 1 },
+            { id: 19, text: "أعوذ بكلمات الله التامات من شر ما خلق", count: 3 },
+            { id: 20, text: "اللهم إني أصبحت أشهدك وأشهد حملة عرشك، وملائكتك وجميع خلقك، أنك أنت الله لا إله إلا أنت وحدك لا شريك لك، وأن محمداً عبدك ورسولك", count: 4 },
+            { id: 21, text: "سبحان الله وبحمده، عدد خلقه، ورضا نفسه، وزنة عرشه، ومداد كلماته", count: 3 },
+            { id: 22, text: "اللهم ما أصبح بي من نعمة أو بأحد من خلقك فمنك وحدك لا شريك لك، فلك الحمد ولك الشكر", count: 1 },
+            { id: 23, text: "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملًا متقبلاً", count: 1 },
+            { id: 24, text: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَأَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ، وَأَعُوذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ، وَقَهْرِ الرِّجَالِ", count: 1 },
+            { id: 25, text: "يا مقلب القلوب ثبت قلبي على دينك", count: 3 },
+            { id: 26, text: "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، وهو على كل شيء قدير", count: 100 },
+            { id: 27, text: "سبحان الله وبحمده", count: 100 },
+            { id: 28, text: "سُبْحَانَ اللهِ العَظِيمِ وَبِحَمْدِهِ", count: 10 },
+            { id: 29, text: "أستغفر الله وأتوب إليه", count: 100 },
+            { id: 30, text: "اللهم صلِّ وسلم على نبينا محمد", count: 10 }
+        ];
+
+        function loadAzkar() {
+            const listContainer = document.getElementById('azkar-list');
+            listContainer.innerHTML = '';
             
-            const card = document.createElement('div');
-            card.className = `zekr-card ${isCompleted ? 'completed' : ''}`;
-            card.onclick = () => decrement(item.id);
+            azkarData.forEach(item => {
+                const savedCount = localStorage.getItem(`zekr_${item.id}`) || item.count;
+                const isCompleted = savedCount == 0;
+                
+                const card = document.createElement('div');
+                card.className = `zekr-card ${isCompleted ? 'completed' : ''}`;
+                card.onclick = () => decrement(item.id);
 
-            card.innerHTML = `
-                <span class="zekr-text">${item.text}</span>
-                <div class="controls">
-                    <span class="count-label">المتبقي: <span id="val-${item.id}">${savedCount}</span> <span class="check-mark">✓</span></span>
-                    <button class="counter-btn">${isCompleted ? '✓' : savedCount}</button>
-                </div>
-            `;
-            listContainer.appendChild(card);
-        });
-    }
-
-    function decrement(id) {
-        let current = parseInt(localStorage.getItem(`zekr_${id}`) || azkarData.find(a => a.id === id).count);
-        if (current > 0) {
-            current--;
-            localStorage.setItem(`zekr_${id}`, current);
-            loadAzkar();
+                card.innerHTML = `
+                    <span class="zekr-text">${item.text}</span>
+                    <div class="controls">
+                        <span class="count-label">المتبقي: <span id="val-${item.id}">${savedCount}</span> <span class="check-mark">✓</span></span>
+                        <button class="counter-btn">${isCompleted ? '✓' : savedCount}</button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
         }
-    }
 
-    function resetAll() {
-        if(confirm("هل تريد إعادة عد الأذكار من جديد؟")) {
-            localStorage.clear();
-            loadAzkar();
+        function decrement(id) {
+            let current = parseInt(localStorage.getItem(`zekr_${id}`) || azkarData.find(a => a.id === id).count);
+            if (current > 0) {
+                current--;
+                localStorage.setItem(`zekr_${id}`, current);
+                loadAzkar();
+            }
         }
-    }
 
-    window.onload = loadAzkar;
-</script>
+        function resetAll() {
+            if(confirm("هل تريد إعادة عد الأذكار من جديد؟")) {
+                const keys = Object.keys(localStorage);
+                keys.forEach(key => {
+                    if(key.startsWith('zekr_')) localStorage.removeItem(key);
+                });
+                loadAzkar();
+            }
+        }
 
+        window.onload = loadAzkar;
+    </script>
 </body>
 </html>
-
